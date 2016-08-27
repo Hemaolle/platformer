@@ -35,7 +35,7 @@ public class Crusher : MonoBehaviour {
 	}
 
 	IEnumerator WaitUp() {
-		rigidbody2D.velocity = new Vector2 (0, 0);
+		GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
 		state = State.WaitingUp;
 		yield return new WaitForSeconds(timeWaitingUp);
 		MoveDown ();
@@ -43,11 +43,11 @@ public class Crusher : MonoBehaviour {
 
 	void MoveDown() {
 		state = State.GoingDown;
-		rigidbody2D.velocity = new Vector2 (0, -comeDownSpeed);
+		GetComponent<Rigidbody2D>().velocity = new Vector2 (0, -comeDownSpeed);
 	}
 
 	IEnumerator WaitDown() {
-		rigidbody2D.velocity = new Vector2 (0, 0);
+		GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
 		state = State.WaitingUp;
 		yield return new WaitForSeconds(timeWaitingDown);
 		MoveUp ();
@@ -55,11 +55,11 @@ public class Crusher : MonoBehaviour {
 
 	void MoveUp() {
 		state = State.GoingUp;
-		rigidbody2D.velocity = new Vector2 (0, goUpSpeed);
+		GetComponent<Rigidbody2D>().velocity = new Vector2 (0, goUpSpeed);
 	}
 
 	public void Stop() {
-		rigidbody2D.velocity = Vector2.zero;
+		GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		StopCoroutine("WaitDown");
 		StopCoroutine("WaitUp");
 		enabled = false;

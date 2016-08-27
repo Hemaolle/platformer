@@ -23,7 +23,7 @@ public class Button : MonoBehaviour {
 		if (collider.gameObject.name == "cube1") 
 		{
 			crusher.Stop();
-			collider.rigidbody2D.isKinematic = true;
+			collider.GetComponent<Rigidbody2D>().isKinematic = true;
 		}
 	}
 }

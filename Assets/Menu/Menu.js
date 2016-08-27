@@ -6,16 +6,16 @@ var beep : AudioClip;
 var QuitButton : boolean = false;
 
 function OnMouseOver(){
-renderer.material = hoverMaterial;
+GetComponent.<Renderer>().material = hoverMaterial;
 }
 function OnMouseExit(){
-renderer.material = Material;
+GetComponent.<Renderer>().material = Material;
 }
 function OnMouseEnter(){
-audio.PlayOneShot(soundhover);
+GetComponent.<AudioSource>().PlayOneShot(soundhover);
 }
 function OnMouseUp(){
-audio.PlayOneShot(beep);
+GetComponent.<AudioSource>().PlayOneShot(beep);
 yield new WaitForSeconds(0.35);
 if(QuitButton){
 Application.Quit();

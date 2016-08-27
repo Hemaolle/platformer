@@ -35,8 +35,8 @@ public class Player : Character {
 			GetComponent<Animator> ().SetTrigger ("Die");
 			GetComponent<PlayerControl> ().enabled = false;
 			transform.Find ("Main Camera").parent = null;
-			collider2D.isTrigger = true;
-			rigidbody2D.velocity = new Vector2(0, 10);
+			GetComponent<Collider2D>().isTrigger = true;
+			GetComponent<Rigidbody2D>().velocity = new Vector2(0, 10);
 			alive = false;
 			hurtAudio.Play();
 			Invoke("RestartLevel", 2);
