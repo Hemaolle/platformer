@@ -66,7 +66,6 @@ public class JumpController : MonoBehaviour {
 
 		public void ProcessInputs (bool grounded, bool jumpButtonPressed, JumpController jumpController)
 		{
-			Debug.Log (forceAddedCount + " maxForceAddTimes " + jumpController.maxForceAddTimes);
 			// The player can quickly get grounded if the ceiling is low for example
 			if (grounded && jumpController.rigidbody.velocity.y <= 0)
 			{
