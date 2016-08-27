@@ -10,8 +10,10 @@ public class JumpController : MonoBehaviour {
 	public Animator anim;
 	public AudioSource jumpAudio;			
 
-	bool jumpButtonPressed = false;
-	bool grounded = true;
+	private bool jumpButtonPressed = false;
+	private bool grounded = true;
+	private Rigidbody2D rigidbody;
+	private bool wasJumpButtonReleasedInBetween = true;
 
 	IJumpState currentJumpState;
 
@@ -22,17 +24,19 @@ public class JumpController : MonoBehaviour {
 	private void Awake()
 	{
 		currentJumpState = groundedState;
+		rigidbody = GetComponent<Rigidbody2D>();
 	}
 
 	private void FixedUpdate() {
 		jumpButtonPressed = Input.GetButton("Jump");
 		grounded = DoGroundCheck();
-
+		if (Input.GetButtonUp("Jump"))
+			wasJumpButtonReleasedInBetween = true;
 		currentJumpState.ProcessInputs(grounded, jumpButtonPressed, this);
 	}
 
 	private void AddJumpForce() {
-		GetComponent<Rigidbody2D>().AddForce (new Vector2 (0f, jumpForce));
+		rigidbody.AddForce(new Vector2(0f, jumpForce));
 	}
 
 	interface IJumpState
@@ -44,12 +48,14 @@ public class JumpController : MonoBehaviour {
 	{
 		public void ProcessInputs (bool grounded, bool jumpButtonPressed, JumpController jumpController)
 		{
-			if (jumpButtonPressed)
+			if (jumpButtonPressed &&				
+				jumpController.wasJumpButtonReleasedInBetween)
 			{
 				jumpController.anim.SetBool("Jump", true);
 				jumpController.jumpAudio.Play();
 				jumpController.AddJumpForce();
 				jumpController.currentJumpState = jumpController.airbornAddingForceState;
+				jumpController.wasJumpButtonReleasedInBetween = false;
 			}
 			else {
 				jumpController.anim.SetBool("Jump", false);
@@ -63,8 +69,9 @@ public class JumpController : MonoBehaviour {
 
 		public void ProcessInputs (bool grounded, bool jumpButtonPressed, JumpController jumpController)
 		{
+			Debug.Log (forceAddedCount + " maxForceAddTimes " + jumpController.maxForceAddTimes);
 			// The player can quickly get grounded if the ceiling is low for example
-			if (grounded)
+			if (grounded && jumpController.rigidbody.velocity.y <= 0)
 			{
 				SetJumpControllerState(jumpController, jumpController.groundedState);
 			}
@@ -88,7 +95,7 @@ public class JumpController : MonoBehaviour {
 		
 		public void ProcessInputs (bool grounded, bool jumpButtonPressed, JumpController jumpController)
 		{
-			if (grounded) {
+			if (grounded && jumpController.rigidbody.velocity.y <= 0) {
 				jumpController.currentJumpState = jumpController.groundedState;
 			}
 		}
