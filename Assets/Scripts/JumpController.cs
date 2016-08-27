@@ -51,6 +51,9 @@ public class JumpController : MonoBehaviour {
 				jumpController.AddJumpForce();
 				jumpController.currentJumpState = jumpController.airbornAddingForceState;
 			}
+			else {
+				jumpController.anim.SetBool("Jump", false);
+			}
 		}
 	}
 
