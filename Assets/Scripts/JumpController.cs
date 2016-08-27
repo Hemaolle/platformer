@@ -17,7 +17,7 @@ public class JumpController : MonoBehaviour {
 
 	IJumpState groundedState = new Grounded();
 	IJumpState airbornAddingForceState = new AirbornAddingForce();
-	IJumpState airbornNotAddingForceState = new AirbornAddingForce();
+	IJumpState airbornNotAddingForceState = new AirbornNotAddingForce();
 
 	private void Awake()
 	{
@@ -65,16 +65,10 @@ public class JumpController : MonoBehaviour {
 			{
 				SetJumpControllerState(jumpController, jumpController.groundedState);
 			}
-			else if (jumpButtonPressed) {				
+			else if (jumpButtonPressed && forceAddedCount < jumpController.maxForceAddTimes) {				
 				forceAddedCount++;
-				if (forceAddedCount > jumpController.maxForceAddTimes)
-				{
-					SetJumpControllerState(jumpController, jumpController.airbornNotAddingForceState);
-				}
 				jumpController.AddJumpForce();
 			}
-
-			// jump button not pressed
 			else {
 				SetJumpControllerState(jumpController, jumpController.airbornNotAddingForceState);
 			}

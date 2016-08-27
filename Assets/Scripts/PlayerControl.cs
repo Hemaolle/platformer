@@ -23,7 +23,7 @@ public class PlayerControl : MonoBehaviour
 	public AudioSource walkAudio;			
 	public AudioSource shootAudio;
 
-	private Transform groundCheck;			// A position marking where to check if the player is grounded.
+	public Transform groundCheck;			// A position marking where to check if the player is grounded.
 	private bool grounded = false;			// Whether or not the player is grounded.
 	private Animator anim;					// Reference to the player's animator component.	
 
