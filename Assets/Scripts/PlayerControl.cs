@@ -25,6 +25,7 @@ public class PlayerControl : MonoBehaviour
 
 	public Transform groundCheck;			// A position marking where to check if the player is grounded.
 	private bool grounded = false;			// Whether or not the player is grounded.
+	public bool Grounded { get { return grounded; }}
 	private Animator anim;					// Reference to the player's animator component.	
 
 	private float lastWalkSound;

@@ -680,12 +680,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f530ed59515c04412917e89b8d66ee1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheckXDistance: 0.32
-  groundCheck: {fileID: 400002}
   jumpForce: 120
   maxForceAddTimes: 5
   anim: {fileID: 9500000}
   jumpAudio: {fileID: 8200006}
+  playerControl: {fileID: 11400000}
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

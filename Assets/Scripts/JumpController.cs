@@ -3,23 +3,21 @@ using System.Collections;
 
 public class JumpController : MonoBehaviour {
 
-	public float groundCheckXDistance = 1f;	// How far to left and right should additional ground checks be done.
-	public Transform groundCheck;
 	public float jumpForce = 1000f;
 	public int maxForceAddTimes = 5;
 	public Animator anim;
 	public AudioSource jumpAudio;			
+	public PlayerControl playerControl;
 
 	private bool jumpButtonPressed = false;
-	private bool grounded = true;
 	private Rigidbody2D rigidbody;
 	private bool wasJumpButtonReleasedInBetween = true;
 
-	IJumpState currentJumpState;
+	private IJumpState currentJumpState;
 
-	IJumpState groundedState = new Grounded();
-	IJumpState airbornAddingForceState = new AirbornAddingForce();
-	IJumpState airbornNotAddingForceState = new AirbornNotAddingForce();
+	private IJumpState groundedState = new Grounded();
+	private IJumpState airbornAddingForceState = new AirbornAddingForce();
+	private IJumpState airbornNotAddingForceState = new AirbornNotAddingForce();
 
 	private void Awake()
 	{
@@ -29,10 +27,9 @@ public class JumpController : MonoBehaviour {
 
 	private void FixedUpdate() {
 		jumpButtonPressed = Input.GetButton("Jump");
-		grounded = DoGroundCheck();
 		if (Input.GetButtonUp("Jump"))
 			wasJumpButtonReleasedInBetween = true;
-		currentJumpState.ProcessInputs(grounded, jumpButtonPressed, this);
+		currentJumpState.ProcessInputs(playerControl.Grounded, jumpButtonPressed, this);
 	}
 
 	private void AddJumpForce() {
@@ -99,30 +96,5 @@ public class JumpController : MonoBehaviour {
 				jumpController.currentJumpState = jumpController.groundedState;
 			}
 		}
-	}
-
-	/// <summary>
-	/// Checks if the player stands on the ground.
-	/// </summary>
-	private bool DoGroundCheck ()
-	{
-		Vector3 groundCheckMiddleStart = transform.position;
-		Vector3 groundCheckLeftStart = transform.position - Vector3.right * groundCheckXDistance;
-		Vector3 groundCheckRightStart = transform.position + Vector3.right * groundCheckXDistance;
-		Vector3 groundCheckMiddleEnd = groundCheck.position;
-		Vector3 groundCheckLeftEnd = groundCheck.position - (Vector3.right * groundCheckXDistance);
-		Vector3 groundCheckRightEnd = groundCheck.position + (Vector3.right * groundCheckXDistance);
-
-		// The player is grounded if three linecasts from player position to the groundcheck position hits anything on
-		// the ground layer.
-		bool grounded = Physics2D.Linecast (groundCheckMiddleStart, groundCheckMiddleEnd, 
-			1 << LayerMask.NameToLayer ("Ground")) 
-			|| Physics2D.Linecast (groundCheckLeftStart, groundCheckLeftEnd, 1 << LayerMask.NameToLayer ("Ground")) 
-			|| Physics2D.Linecast (groundCheckRightStart, groundCheckRightEnd, 1 << LayerMask.NameToLayer ("Ground"));
-		Debug.DrawRay (groundCheckMiddleStart, groundCheckMiddleEnd - groundCheckMiddleStart);
-		Debug.DrawRay (groundCheckLeftStart, groundCheckLeftEnd - groundCheckLeftStart);
-		Debug.DrawRay (groundCheckRightStart, groundCheckRightEnd - groundCheckRightStart);
-
-		return grounded;
 	}
 }
