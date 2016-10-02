@@ -25,12 +25,26 @@ public class JumpController : MonoBehaviour {
 		rigidbody = GetComponent<Rigidbody2D>();
 	}
 
+    private void Update() {
+        StoreInput();
+    }
+
+    private void StoreInput()
+    {
+        jumpButtonPressed = Input.GetButton("Jump");
+        if (Input.GetButtonUp("Jump"))
+            wasJumpButtonReleasedInBetween = true;
+    }
+
 	private void FixedUpdate() {
-		jumpButtonPressed = Input.GetButton("Jump");
-		if (Input.GetButtonUp("Jump"))
-			wasJumpButtonReleasedInBetween = true;
 		currentJumpState.ProcessInputs(playerControl.Grounded, jumpButtonPressed, this);
+        ResetInput();
 	}
+
+    private void ResetInput()
+    {
+        jumpButtonPressed = false;
+    }
 
 	private void AddJumpForce() {
 		rigidbody.AddForce(new Vector2(0f, jumpForce));
