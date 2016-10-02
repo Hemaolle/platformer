@@ -76,7 +76,8 @@ public class PlayerControl : MonoBehaviour
 	void HandleWalking ()
 	{
 		// Cache the horizontal input.
-		float horizontalInput = Input.GetAxis("Horizontal");
+		// float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = Input.acceleration.z;
 		
 		// If the input is moving the player right and the player is facing left...
 		if(horizontalInput > 0 && !facingRight)
