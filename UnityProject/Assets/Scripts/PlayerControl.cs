@@ -75,9 +75,7 @@ public class PlayerControl : MonoBehaviour
 
 	void HandleWalking ()
 	{
-		// Cache the horizontal input.
-		// float horizontalInput = Input.GetAxis("Horizontal");
-        float horizontalInput = Input.acceleration.z;
+		var horizontalInput = GetHorizontalInput();
 		
 		// If the input is moving the player right and the player is facing left...
 		if(horizontalInput > 0 && !facingRight)
@@ -101,6 +99,24 @@ public class PlayerControl : MonoBehaviour
 		}
 
 		GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalInput * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
+	}
+
+	static float GetHorizontalInput()
+	{
+		float deadZone = 0.2f;
+
+		float maxValue = 0.5f;
+
+		// float horizontalInput = Input.GetAxis("Horizontal");
+		float horizontalInput = Input.acceleration.x;
+
+		if (Mathf.Abs(horizontalInput) < deadZone)
+			return 0;
+
+		if (Mathf.Abs(horizontalInput) > maxValue)
+			return Mathf.Sign(horizontalInput) * 1;
+
+		return Mathf.Sign(horizontalInput) * Mathf.Lerp(0, 1, (Mathf.Abs(horizontalInput) - deadZone) / (maxValue - deadZone));
 	}
 	
 	void HandleAttacking() {
