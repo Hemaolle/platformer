@@ -37,14 +37,10 @@ public class JumpController : MonoBehaviour {
     }
 
 	private void FixedUpdate() {
+//		Debug.Log("grounded " + playerControl.Grounded + " jump pressed: " + jumpButtonPressed +
+//			" jump resleased in between: " + wasJumpButtonReleasedInBetween + " current state: " + currentJumpState.GetType().Name);
 		currentJumpState.ProcessInputs(playerControl.Grounded, jumpButtonPressed, this);
-        ResetInput();
 	}
-
-    private void ResetInput()
-    {
-        jumpButtonPressed = false;
-    }
 
 	private void AddJumpForce() {
 		rigidbody.AddForce(new Vector2(0f, jumpForce));
