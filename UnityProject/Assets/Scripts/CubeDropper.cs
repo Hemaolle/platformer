@@ -17,7 +17,7 @@ public class CubeDropper : MonoBehaviour {
 	}
 
 	void DropCube() {
-		GameObject newCube = (GameObject)Instantiate (cube, transform.position, Quaternion.identity);
-		newCube.GetComponent<DestroyWhenHittingTarget> ().target = destroyCubeCollider;
+		GameObject newCube = (GameObject)Instantiate(cube, transform.position, Quaternion.identity);
+		newCube.GetComponent<DestroyWhenHittingTarget>().target = destroyCubeCollider;
 	}
 }
